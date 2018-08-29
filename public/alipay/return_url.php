@@ -31,8 +31,8 @@ if($result) {//验证成功
 	//——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
     //获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表
 
-	//商户订单号
-     echo "<script>alert('支付成功');location.href='/index.php/frontend/Index/zhifuok'</script>";
+	//商户订单号http://114.116.80.12/frontend/wb/index
+     echo "<script>alert('支付成功');location.href='http://114.116.80.12/frontend/Index/zhifuok'</script>";
 	$out_trade_no = htmlspecialchars($_GET['out_trade_no']);
 
 	//支付宝交易号

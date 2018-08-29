@@ -17,7 +17,7 @@ class Wb extends Controller{
        		"client_secret"=>"61fcfdea2621b27446d91fdcb84f5e87",
        		"grant_type"=>"authorization_code",
        		"code"=>$code,
-       		"redirect_uri"=>"114.116.80.12/frontend/wb/index"
+       		"redirect_uri"=>"http://114.116.80.12/frontend/wb/index"
        	];
        	$token_res=json_decode($this->request_post($token_url,$arr),true);
        	$token=$token_res['access_token'];
@@ -34,7 +34,7 @@ class Wb extends Controller{
         Session::set('user_id',$res['user_id']);
         $this->success('登录成功','index/index');
       }else{
-        $this->error('你还未绑定，请去完善个人信息',"http://www.bsqs.com/index.php/frontend/wb/zhuce");
+        $this->error('你还未绑定，请去完善个人信息',"http://114.116.80.12/frontend/wb/zhuce");
       }
     }   
 

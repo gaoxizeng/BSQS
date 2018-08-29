@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>DouPHP 管理中心 - 添加商品 </title>
+<meta name="Copyright" content="Douco Design." />
+<link href="/static/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/global.js"></script>
+<script type="text/javascript" src="/static/js/jquery.autotextarea.js"></script>
+</head>
+<body>
+<div id="dcWrap">
+ <div id="dcHead">
+ <div id="head">
+  <div class="logo"><a href="index.html"><img src="/static/images/dclogo.gif" alt="logo"></a></div>
+  <div class="nav">
+
+   <ul class="navRight">
+    <li class="M noLeft"><a href="JavaScript:void(0);">您好，<?php echo $admin_name?></a>
+
+    </li>
+    <li class="noRight"><a href="{:url('indexs/loginout')}">退出</a></li>
+   </ul>
+  </div>
+ </div>
+</div>
+<!-- dcHead 结束 --> <div id="dcLeft"><div id="menu">
+ <ul class="top">
+  <li><a href="{:url('indexs/index')}"><i class="home"></i><em>管理首页</em></a></li>
+ </ul>
+ <ul>
+  <li><a href="{:url('admins/admin_list')}"><i class="manager"></i><em>网站管理员</em></a></li>
+  <li><a href="{:url('admins/admin_rbac')}"><i class="manager"></i><em>RBAC管理</em></a></li> </ul>
+ <ul>
+  <li><a href="{:url('slides/slide_list')}"><i class="show"></i><em>首页幻灯广告</em></a></li>
+ </ul>
+ <ul>
+ {include file="public/brand"}
+  <li><a href="{:url('goodss/goods_category')}"><i class="productCat"></i><em>商品分类</em></a></li>
+  <li><a href="{:url('goodss/goods_list')}"><i class="product"></i><em>商品列表</em></a></li>
+  
+  <li><a href="{:url('goodss/goods_attr_list')}"><i class="product"></i><em>商品属性</em></a></li>
+        <li><a href="{:url('goodss/goods_recycle_bin')}"><i class="product"></i><em>商品回收站</em></a></li>
+  <li><a href="{:url('goodss/goods_photo')}"><i class="article"></i><em>相册列表</em></a></li>
+ </ul>
+ <ul>
+  <!-- <li><a href="{:url('articles/article_category')}"><i class="articleCat"></i><em>文章分类</em></a></li> -->
+  <li><a href="{:url('articles/article_list')}"><i class="article"></i><em>文章列表</em></a></li>
+ </ul>
+ <ul>
+  <li><a href="{:url('order/order_list')}"><i class="article"></i><em>订单列表</em></a></li>
+ </ul>
+ <ul class="bot">
+  <li><a href="#"><i class="system"></i><em>系统设置</em></a> </li>
+  <li><a href="{:url('logs/log')}"><i class="managerLog"></i><em>操作记录</em></a></li>
+  <li><a href="{:url('indexs/up_pwd')}"><i class="managerLog"></i><em>修改密码</em></a></li>
+ </ul>
+</div></div>
+ <div id="dcMain">
+   <!-- 当前位置 -->
+<div id="urHere">DouPHP 管理中心<b>></b><strong>添加商品</strong> </div>   <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+            <h3><a href="{:url('goodss/goods_list')}" class="actionBtn">商品列表</a>添加商品</h3>
+    <form action="{:url('goodss/goods_adding')}" method="post" enctype="multipart/form-data" onsubmit="return check_all()">
+     <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+      <tr>
+       <td width="90" align="right">商品名称</td>
+       <td>
+        <input type="text" name="goods_name"  id="goods_name" value="" size="80" class="inpMain" />
+        <span id="spname"></span>
+       </td>
+      </tr>
+      <tr>
+       <td align="right">商品分类</td>
+       <td>
+        <select name="cat_id">
+         <option value="0">顶级分类</option>
+                           <?php foreach ($list as $key => $value): ?>
+                               <option value="<?php echo $value['cat_id'] ?>"><?php echo str_repeat('&nbsp;&nbsp;&nbsp;',($value['f']-1)*2) ?><?php echo $value['cat_name'] ?></option>
+                           <?php endforeach ?>
+                         </select>
+       </td>
+      </tr>
+      <tr>
+       <td align="right">商品价格</td>
+       <td>
+        <input type="text" name="goods_price" id="goods_price" value="0" size="40" class="inpMain" />
+        <span id="spprice"></span>
+       </td>
+      </tr>
+      <tr>
+       <td align="right">品牌</td>
+       <td>
+        <select name="brand_id" id="">
+         <?php foreach ($brand as $k=>$v){?>
+         <option value="<?php echo $v['brand_id']?>"><?php echo $v['brand_name']?></option>
+         <?php }?>
+        </select>
+       </td>
+      </tr>
+            <tr>
+       <td align="right" valign="top">商品描述</td>
+       <td>
+        <!-- KindEditor -->
+			<link rel="stylesheet" href="js/kindeditor/themes/default/default.css" />
+			<link rel="stylesheet" href="js/kindeditor/plugins/code/prettify.css" />
+			<script charset="utf-8" src="js/kindeditor/kindeditor.js"></script>
+			<script charset="utf-8" src="js/kindeditor/lang/zh_CN.js"></script>
+			<script charset="utf-8" src="js/kindeditor/plugins/code/prettify.js"></script>
+        <script>
+					KindEditor.ready(function(K) {
+						var editor1 = K.create('textarea[name="content"]', {
+							cssPath : '../plugins/code/prettify.css',
+							uploadJson : '../php/upload_json.php',
+							fileManagerJson : '../php/file_manager_json.php',
+							allowFileManager : true,
+							afterCreate : function() {
+								var self = this;
+								K.ctrl(document, 13, function() {
+									self.sync();
+									K('form[name=example]')[0].submit();
+								});
+								K.ctrl(self.edit.doc, 13, function() {
+									self.sync();
+									K('form[name=example]')[0].submit();
+								});
+							}
+						});
+						prettyPrint();
+					});
+			</script>
+        <!-- /KindEditor -->
+        <textarea id="content" name="goods_info" style="width:780px;height:400px;" class="textArea"></textarea>
+       </td>
+      </tr>
+      <tr>
+       <td align="right">缩略图</td>
+       <td>
+        <input type="file" name="goods_img" size="38" class="inpFlie" />
+        <img src="images/icon_no.png"></td>
+      </tr>
+      
+      <tr>
+       <td align="right">新品</td>
+       <td>
+        <input type="radio" style="cursor:pointer" name="is_new" value="1" size="50"  checked />是
+        <input type="radio" style="cursor:pointer" name="is_new" value="0" size="50"  />否
+       </td>
+      </tr>
+      <tr>
+      <tr>
+       <td align="right">热销</td>
+       <td>
+        <input type="radio" style="cursor:pointer" name="is_hot" value="1" size="50" checked />是
+        <input type="radio" style="cursor:pointer" name="is_hot" value="0" size="50"  />否
+       </td>
+      </tr>
+      <tr>
+       <td align="right">是否上架</td>
+       <td>
+        <input type="radio" style="cursor:pointer" name="is_put" value="1" size="50" checked />是
+        <input type="radio" style="cursor:pointer" name="is_put" value="0" size="50"  />否
+       </td>
+      </tr>
+      <tr>
+       <td></td>
+       <td>
+        <input type="hidden" name="token" value="21307217" />
+        <input type="hidden" name="id" value="">
+        <input name="submit" class="btn" type="submit" value="提交" />
+       </td>
+      </tr>
+     </table>
+    </form>
+           </div>
+ </div>
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+</body>
+</html>

@@ -1,0 +1,103 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>DouPHP 管理中心</title>
+<meta name="Copyright" content="Douco Design." />
+<link href="/static/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/static//js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/global.js"></script>
+</head>
+<body>
+<div id="dcWrap"> <div id="dcHead">
+ <div id="head">
+  <div class="logo"><a href="index.html"><img src="/static/images/dclogo.gif" alt="logo"></a></div>
+  <div class="nav">
+
+   <ul class="navRight">
+    <?php if(empty($admin_name)){ ?>
+     <li class="M noLeft"><a href="JavaScript:void(0);">[请先登录]</a>
+  <?php  } else{ ?>
+     <li class="M noLeft"><a href="JavaScript:void(0);">您好，<?php echo $admin_name?></a>
+  <?php  }?>
+
+
+
+     <!--<div class="drop mUser">-->
+      <!--<a href="manager.php?rec=edit&id=1">编辑我的个人资料</a>-->
+      <!--<a href="manager.php?rec=cloud_account">设置云账户</a>-->
+     <!--</div>-->
+    </li>
+    <li class="noRight"><a href="{:url('login/loginout')}">退出</a></li>
+   </ul>
+  </div>
+ </div>
+</div>
+<!-- dcHead 结束 --> <div id="dcLeft"><div id="menu">
+  <ul class="top">
+   <li><a href="{:url('indexs/index')}"><i class="home"></i><em>管理首页</em></a></li>
+  </ul>
+        <ul>
+            <li><a href="{:url('admins/admin_list')}"><i class="manager"></i><em>网站管理员</em></a></li>
+            <li><a href="{:url('admins/admin_rbac')}"><i class="manager"></i><em>RBAC管理</em></a></li> </ul>
+        <ul>
+            <li><a href="{:url('slides/slide_list')}"><i class="show"></i><em>首页幻灯广告</em></a></li>
+        </ul>
+  <ul>
+  {include file="public/brand"}
+   <li><a href="{:url('goodss/goods_category')}"><i class="productCat"></i><em>商品分类</em></a></li>
+   <li><a href="{:url('goodss/goods_list')}"><i class="product"></i><em>商品列表</em></a></li>
+       
+      <li><a href="{:url('goodss/goods_attr_list')}"><i class="product"></i><em>商品属性</em></a></li>
+        <li><a href="{:url('goodss/goods_recycle_bin')}"><i class="product"></i><em>商品回收站</em></a></li>
+      <li><a href="{:url('goodss/goods_photo')}"><i class="article"></i><em>相册列表</em></a></li>
+  </ul>
+  <ul>
+   <li><a href="{:url('articles/article_list')}"><i class="article"></i><em>文章列表</em></a></li>
+  </ul>
+        <ul>
+            <li><a href="{:url('order/order_list')}"><i class="article"></i><em>订单列表</em></a></li>
+        </ul>
+
+  <ul class="bot">
+   <li><a href="#"><i class="system"></i><em>系统设置</em></a> </li>
+   <li><a href="{:url('logs/log')}"><i class="managerLog"></i><em>操作记录</em></a></li>
+   <li><a href="{:url('indexs/up_pwd')}"><i class="managerLog"></i><em>修改密码</em></a></li>
+  </ul>
+</div></div>
+ <div id="dcMain"> <!-- 当前位置 -->
+<div id="urHere">DouPHP 管理中心</div>  <div id="index" class="mainBox" style="padding-top:18px;height:auto!important;height:550px;min-height:550px;">
+      <div class="warning">您还没有删除 install 文件夹，出于安全的考虑，我们建议您删除 install 文件夹。</div>
+
+   <div id="douApi"></div>
+      <div class="indexBox">
+    <div class="boxTitle">单页面快速管理</div>
+    <ul class="ipage">
+
+     <a href="/index.php/backend/index/page.html?rec=edit&id=1">公司简介</a>
+
+     <a href="page.html?rec=edit&id=2" class="child1">企业荣誉</a>
+
+     <a href="page.html?rec=edit&id=3" class="child1">发展历程</a>
+
+     <a href="page.html?rec=edit&id=4" class="child1">联系我们</a>
+
+     <a href="page.html?rec=edit&id=5">人才招聘</a>
+
+     <a href="page.html?rec=edit&id=6">营销网络</a>
+          <div class="clear"></div>
+    </ul>
+   </div>
+       </ul>
+      </div>
+     </td>
+
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+</body>
+</html>

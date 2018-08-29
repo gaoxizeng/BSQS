@@ -1,0 +1,154 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>DouPHP 管理中心 - 商品回收站 </title>
+<meta name="Copyright" content="Douco Design." />
+<link href="/static/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/global.js"></script>
+<script type="text/javascript" src="/static/js/jquery.autotextarea.js"></script>
+</head>
+<body>
+<div id="dcWrap">
+ <div id="dcHead">
+     <?php include (APP_PATH.'backend/view/goodss/nav.html' )?>
+
+ </div>
+</div>
+<!-- dcHead 结束 --> <div id="dcLeft"><div id="menu">
+    <ul class="top">
+        <li><a href="{:url('indexs/index')}"><i class="home"></i><em>管理首页</em></a></li>
+    </ul>
+    <ul>
+        <li><a href="{:url('admins/admin_list')}"><i class="manager"></i><em>网站管理员</em></a></li>
+        <li><a href="{:url('admins/admin_rbac')}"><i class="manager"></i><em>RBAC管理</em></a></li> </ul>
+    <ul>
+        <li><a href="{:url('slides/slide_list')}"><i class="show"></i><em>首页幻灯广告</em></a></li>
+    </ul>
+    <ul>
+    {include file="public/brand"}
+        <li><a href="{:url('goodss/goods_category')}"><i class="productCat"></i><em>商品分类</em></a></li>
+        <li><a href="{:url('goodss/goods_list')}"><i class="product"></i><em>商品列表</em></a></li>
+   
+        <li><a href="{:url('goodss/goods_attr_list')}"><i class="product"></i><em>商品属性</em></a></li>
+       
+        <li><a href="{:url('goodss/goods_recycle_bin')}"><i class="product"></i><em>商品回收站</em></a></li>
+        <li><a href="{:url('goodss/goods_photo')}"><i class="article"></i><em>相册列表</em></a></li>
+    </ul>
+    <ul>
+     <!--    <li><a href="{:url('articles/article_category')}"><i class="articleCat"></i><em>文章分类</em></a></li> -->
+        <li><a href="{:url('articles/article_list')}"><i class="article"></i><em>文章列表</em></a></li>
+    </ul>
+    <ul>
+        <li><a href="{:url('order/order_list')}"><i class="article"></i><em>订单列表</em></a></li>
+    </ul>
+    <ul class="bot">
+
+        <li><a href="#"><i class="system"></i><em>系统设置</em></a> </li>
+        <li><a href="{:url('logs/log')}"><i class="managerLog"></i><em>操作记录</em></a></li>
+        <li><a href="{:url('indexs/up_pwd')}"><i class="managerLog"></i><em>修改密码</em></a></li>
+    </ul>
+</div></div>
+ <div id="dcMain">
+   <!-- 当前位置 -->
+<div id="urHere">DouPHP 管理中心<b>></b><strong>商品回收站</strong> </div>   <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+        <h3>  商品回收站</h3>
+ 
+        <div id="list">
+    <form name="action" method="post" action="product.php?rec=action">
+    <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+      <tr>
+       
+        <th width="40" align="center">编号</th>
+        <th align="center" width="150">商品名称</th>
+        <th width="150" align="center">商品分类</th>
+
+       <th width="80" align="center">操作</th>
+ 
+      
+      </tr>
+      <tbody class="goodsdata">
+       <?php foreach ($list as $key => $value): ?>
+        <tr>
+        <td align="center"><?php  echo $value['goods_id'] ?></td>
+        <td align="center" ><span class="goodsname"><?php echo $value['goods_name'] ?></span></td>
+        <td align="center"><?php echo $value['cat_name'] ?></td>
+        
+        <td align="center" title="点击移出回收站" style="cursor:pointer" class="isnew" 
+        zhi="<?php echo $value['is_del']  ?>">移出</td>
+      
+    
+       
+      </tr>
+      <?php endforeach ?>
+      </tbody>
+          </table>
+   
+    </form>
+    </div>
+    <div class="clear"></div>
+               </div>
+ </div>
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+<script type="text/javascript">
+
+onload = function()
+{
+ document.forms['action'].reset();
+}
+
+function douAction()
+{
+ var frm = document.forms['action'];
+ frm.elements['new_cat_id'].style.display = frm.elements['action'].value == 'category_move' ? '' : 'none';
+}
+
+</script>
+</body>
+</html>
+<script src="/static/js/jquery.min.js"></script>
+<script>
+  $(document).ready(function(){
+   
+    /*修改上下架*/
+   $(document).on('click','.isnew',function(){
+      if(window.confirm('你确定将本商品移出回收站吗？')){
+               var goods_id=$(this).parent().children().eq(0).html();
+               var that=$(this);
+            $.ajax({
+                      url:"{:url('goodss/goods_update')}",
+                      dataType:'json',
+                      type:'post',
+                      data:{
+                         goods_id:goods_id,
+                         is_del:'0'
+                      },success:function(res){
+                        console.log(res)
+                        if(res==666){
+                         that.parents('tr').remove();
+                          
+                        }else if(res == 101){
+                          alert('修改值与原值相同，无法修改，请重新修改！！！！');
+                        }else{
+                          alert('修改失败');
+                        }
+                      }
+                   })
+              }else{
+                 
+                 
+             }
+   })
+  })
+</script>

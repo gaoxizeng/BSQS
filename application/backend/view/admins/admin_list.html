@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>DouPHP 管理中心 - 网站管理员 </title>
+<meta name="Copyright" content="Douco Design." />
+<link href="/static/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/global.js"></script>
+</head>
+<body>
+<div id="dcWrap">
+ <div id="dcHead">
+ <div id="head">
+  <div class="logo"><a href="index.html"><img src="/static/images/dclogo.gif" alt="logo"></a></div>
+  <div class="nav">
+
+   <ul class="navRight">
+    <li class="M noLeft"><a href="javascript:void(0);">您好，<?php echo $admin_name?></a>
+
+    </li>
+    <li class="noRight"><a href="{:url('login/loginout')}">退出</a></li>
+   </ul>
+  </div>
+ </div>
+</div>
+<!-- dcHead 结束 --> <div id="dcLeft"><div id="menu">
+ <ul class="top">
+  <li><a href="{:url('indexs/index')}"><i class="home"></i><em>管理首页</em></a></li>
+ </ul>
+ <ul>
+  <li><a href="{:url('admins/admin_list')}"><i class="manager"></i><em>网站管理员</em></a></li>
+  <li><a href="{:url('admins/admin_rbac')}"><i class="manager"></i><em>RBAC管理</em></a></li></ul>
+
+  <ul>
+  <li><a href="{:url('slides/slide_list')}"><i class="show"></i><em>首页幻灯广告</em></a></li>
+
+ </ul>
+ <ul>
+ {include file="public/brand"}
+  <li><a href="{:url('goodss/goods_category')}"><i class="productCat"></i><em>商品分类</em></a></li>
+  <li><a href="{:url('goodss/goods_list')}"><i class="product"></i><em>商品列表</em></a></li>
+
+  <li><a href="{:url('goodss/goods_attr_list')}"><i class="product"></i><em>商品属性</em></a></li>
+        <li><a href="{:url('goodss/goods_recycle_bin')}"><i class="product"></i><em>商品回收站</em></a></li>
+  <li><a href="{:url('goodss/goods_photo')}"><i class="article"></i><em>相册列表</em></a></li>
+ </ul>
+ <ul>
+  <li><a href="{:url('articles/article_list')}"><i class="article"></i><em>文章列表</em></a></li>
+ </ul>
+ <ul>
+  <li><a href="{:url('order/order_list')}"><i class="article"></i><em>订单列表</em></a></li>
+ </ul>
+ <ul class="bot">
+  <li><a href="#"><i class="system"></i><em>系统设置</em></a> </li>
+  <li><a href="{:url('logs/log')}"><i class="managerLog"></i><em>操作记录</em></a></li>
+  <li><a href="{:url('indexs/up_pwd')}"><i class="managerLog"></i><em>修改密码</em></a></li>
+ </ul>
+</div></div>
+ <div id="dcMain">
+
+<div id="urHere">DouPHP 管理中心<b>></b><strong>管理员</strong> </div>   <div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    <h3><a href="{:url('admins/admin_add')}" class="actionBtn">添加管理员</a>管理员</h3>
+        <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+     <tr>
+      <th width="30" align="center">编号</th>
+      <th align="left">管理员名称</th>
+      <th align="center">添加时间</th>
+      <th align="center">是否启用</th>
+      <th align="center">最后登录时间</th>
+      <th align="center">操作</th>
+     </tr>
+         <?php foreach ($res as $k=>$admin) {?>
+          <tr>
+      <td align="center"><?php echo $admin['admin_id']?></td>
+      <td><?php echo $admin['admin_name']?></td>
+      <td align="center"><?php echo $admin['add_time']?></td>
+      <td align="center"><img src="/backend/uploads/<?php echo $admin['is_use']==1 ? 'ok' : 'no'?>.png" id='is_use' k="<?php echo $admin['admin_id'] ?>"></td>
+      <td align="center"><?php echo $admin['lastlogintime']?></td>
+      <td align="center"><a href="{:url('admins/del')}?id=<?php echo $admin['admin_id']?>">删除</a></td>
+     </tr>
+         <?php }?>
+         </table>
+                       </div>
+ </div>
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+</body>
+<script>
+  $(document).on('click','#is_use',function(){
+          var src = $(this).attr('src');
+          var admin_id= $(this).attr('k');
+          var is_use =1;
+          if(src=="/backend/uploads/ok.png"){
+              $(this).attr('src','/backend/uploads/no.png');
+              is_use = 0;
+          }else{
+              $(this).attr('src','/backend/uploads/ok.png');
+          }
+          $.ajax({
+              url:"{:url('admins/is_use')}",
+              data:{admin_id:admin_id,is_use:is_use},
+              type:'post',
+              dataType:"json",
+              success:function(res){
+                  if(res){
+                      history.go(0);
+                  }
+              }
+          })
+      })
+</script>
+</html>

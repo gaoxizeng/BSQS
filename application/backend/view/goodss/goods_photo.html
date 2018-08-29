@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>DouPHP 管理中心 - 网站管理员 </title>
+<meta name="Copyright" content="Douco Design." />
+<link href="/static/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/global.js"></script>
+<style>
+  .pagination{
+    float: right;
+    margin-right: 15%;
+  }
+  .pagination li{
+        float: left;
+        padding-left: 14px; 
+  }
+</style>
+</head>
+<body>
+<div id="dcWrap">
+ <div id="dcHead">
+ <div id="head">
+  <div class="logo"><a href="index.html"><img src="/static/images/dclogo.gif" alt="logo"></a></div>
+  <div class="nav">
+
+   <ul class="navRight">
+    <li class="M noLeft"><a href="JavaScript:void(0);">您好，<?php echo $admin_name?></a>
+
+    </li>
+    <li class="noRight"><a href="{:url('login/loginout')}">退出</a></li>
+   </ul>
+  </div>
+ </div>
+</div>
+<!-- dcHead 结束 --> <div id="dcLeft"><div id="menu">
+ <ul class="top">
+  <li><a href="{:url('indexs/index')}"><i class="home"></i><em>管理首页</em></a></li>
+ </ul>
+ <ul>
+  <li><a href="{:url('admins/admin_list')}"><i class="manager"></i><em>网站管理员</em></a></li>
+  <li><a href="{:url('admins/admin_rbac')}"><i class="manager"></i><em>RBAC管理</em></a></li> </ul>
+ <ul>
+  <li><a href="{:url('slides/slide_list')}"><i class="show"></i><em>首页幻灯广告</em></a></li>
+ </ul>
+ <ul>
+ {include file="public/brand"}
+  <li><a href="{:url('goodss/goods_category')}"><i class="productCat"></i><em>商品分类</em></a></li>
+  <li><a href="{:url('goodss/goods_list')}"><i class="product"></i><em>商品列表</em></a></li>
+
+  <li><a href="{:url('goodss/goods_attr_list')}"><i class="product"></i><em>商品属性</em></a></li>
+        <li><a href="{:url('goodss/goods_recycle_bin')}"><i class="product"></i><em>商品回收站</em></a></li>
+  <li><a href="{:url('goodss/goods_photo')}"><i class="article"></i><em>相册列表</em></a></li>
+ </ul>
+ <ul>
+  <!-- <li><a href="{:url('articles/article_category')}"><i class="articleCat"></i><em>文章分类</em></a></li> -->
+  <li><a href="{:url('articles/article_list')}"><i class="article"></i><em>文章列表</em></a></li>
+ </ul>
+    <ul>
+        <li><a href="{:url('order/order_list')}"><i class="article"></i><em>订单列表</em></a></li>
+    </ul>
+ <ul class="bot">
+  <li><a href="#"><i class="system"></i><em>系统设置</em></a> </li>
+  <li><a href="{:url('logs/log')}"><i class="managerLog"></i><em>操作记录</em></a></li>
+  <li><a href="{:url('indexs/up_pwd')}"><i class="managerLog"></i><em>修改密码</em></a></li>
+ </ul>
+</div></div>
+ <div id="dcMain">
+<div id="urHere">DouPHP 管理中心<b>></b><strong>相册</strong> </div>   
+<div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    <h3><a href="{:url('goodss/add_img')}" class="actionBtn">添加相册</a>相册</h3>
+            <form action="" method="get">
+          <input type="text" name="keywords" value="{$keywords}" class="inpMain">
+          <input type="submit" value="查询" class="btn"> 
+        </form>
+        <br/><br/>
+ <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+  <tr>
+   <th width="30" align="center">编号</th>
+   <th align="left">相册名称</th>
+   <th align="left">封面图片</th>
+   <!--<th align="center">商品编号</th>-->
+   <th align="center">操作</th>
+  </tr>
+
+   <?php foreach($res as $k=>$v){?>
+  <tr>
+   <th><?php echo $v['album_id']?></th>
+   <th><a href="{:url('goodss/tupian')}?album_id=<?php echo $v['album_id']?>"><?php echo $v['album_name']?></a></th>
+   <th><img src="__ROOT__/<?php echo $v['album_img']?>" width="100" height="100"></th>
+   <th></th>
+  </tr>
+  <?php }?>
+   <tr>
+     <th colspan="4">
+ <ul class="pagination">
+      <li class="disabled">
+            <a href="/index.php/backend/goodss/goods_photo.html?page=1">首页</a>
+      </li>
+      <li class="active">
+              <a href="/index.php/backend/goodss/goods_photo.html?page=
+               <?php if ($res->currentPage()-1<1) {echo 1;}else{echo $res->currentPage()-1;}?>">上一页</a>
+      </li>
+      <li>
+              <a href="/index.php/backend/goodss/goods_photo.html?page=
+              <?php if ($res->currentPage()+1>$res->lastPage()) {echo $res->lastPage();}else{echo $res->currentPage()+1;}?>">下一页</a>
+      </li>
+      <li>              <a href="/index.php/backend/goodss/goods_photo.html?page={$res->lastPage()}">尾页</a></li>
+      <li>   <a href="/index.php/backend/goodss/goods_photo.html?page={$res->currentPage()}">当前{$res->currentPage()}页</a></li>
+      <li>  <span>总共{$res->lastPage()}页</span>     </li>
+  </ul>
+     </th>
+   </tr>
+ </table>
+ </div>
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+</body>
+</html>

@@ -1,0 +1,433 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>DouPHP 管理中心 - 商品列表 </title>
+<meta name="Copyright" content="Douco Design." />
+<link href="/static/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/global.js"></script>
+<script type="text/javascript" src="/static/js/jquery.autotextarea.js"></script>
+</head>
+<body>
+<div id="dcWrap">
+ <div id="dcHead">
+     <?php include (APP_PATH.'backend/view/goodss/nav.html' )?>
+
+ </div>
+</div>
+<!-- dcHead 结束 --> <div id="dcLeft"><div id="menu">
+    <ul class="top">
+        <li><a href="{:url('indexs/index')}"><i class="home"></i><em>管理首页</em></a></li>
+    </ul>
+    <ul>
+        <li><a href="{:url('admins/admin_list')}"><i class="manager"></i><em>网站管理员</em></a></li>
+        <li><a href="{:url('admins/admin_rbac')}"><i class="manager"></i><em>RBAC管理</em></a></li> </ul>
+    <ul>
+        <li><a href="{:url('slides/slide_list')}"><i class="show"></i><em>首页幻灯广告</em></a></li>
+    </ul>
+    <ul>
+    {include file="public/brand"}
+        <li><a href="{:url('goodss/goods_category')}"><i class="productCat"></i><em>商品分类</em></a></li>
+        <li><a href="{:url('goodss/goods_list')}"><i class="product"></i><em>商品列表</em></a></li>
+   
+        <li><a href="{:url('goodss/goods_attr_list')}"><i class="product"></i><em>商品属性</em></a></li>
+        <li><a href="{:url('goodss/goods_recycle_bin')}"><i class="product"></i><em>商品回收站</em></a></li>
+        <li><a href="{:url('goodss/goods_photo')}"><i class="article"></i><em>相册列表</em></a></li>
+    </ul>
+    <ul>
+     <!--    <li><a href="{:url('articles/article_category')}"><i class="articleCat"></i><em>文章分类</em></a></li> -->
+        <li><a href="{:url('articles/article_list')}"><i class="article"></i><em>文章列表</em></a></li>
+    </ul>
+    <ul>
+        <li><a href="{:url('order/order_list')}"><i class="article"></i><em>订单列表</em></a></li>
+    </ul>
+    <ul class="bot">
+
+        <li><a href="#"><i class="system"></i><em>系统设置</em></a> </li>
+        <li><a href="{:url('logs/log')}"><i class="managerLog"></i><em>操作记录</em></a></li>
+        <li><a href="{:url('indexs/up_pwd')}"><i class="managerLog"></i><em>修改密码</em></a></li>
+    </ul>
+</div></div>
+ <div id="dcMain">
+   <!-- 当前位置 -->
+<div id="urHere">DouPHP 管理中心<b>></b><strong>商品列表</strong> </div>   <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+        <h3><a href="{:url('goodss/goods_add')}" class="actionBtn add">添加商品</a>商品列表</h3>
+    <div class="filter">
+    
+     <select name="cat_id" class="likecat">
+      <option value="0">未分类</option>
+      <?php foreach ($cats as $key => $value): ?>
+         <option value="<?php echo $value['cat_id'] ?>"><?php echo str_repeat('&nbsp;&nbsp;',($value['f']-1)*2) ?><?php echo $value['cat_name'] ?></option>
+      <?php endforeach ?>
+                 
+                       
+                 </select>
+     <input name="keyword" type="text" placeholder='商品名称' class="inpMain" value="" size="20" />
+     <input name="submit" class="btnGray"  id="shixuan" type="submit" value="筛选" />
+  
+    <span>
+   
+        </span>
+    </div>
+        <div id="list">
+    <form name="action" method="post" action="product.php?rec=action">
+    <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+      <tr>
+        <th width="22" align="center"><input name='chkall' type='checkbox' id='chkall' onclick='selectcheckbox(this.form)' ></th>
+        <th width="40" align="center">编号</th>
+        <th align="left">商品名称</th>
+        <th width="150" align="center">商品分类</th>
+        <th width="80" align="center">添加日期</th>
+        <th width="80" align="center">是否新品</th>
+        <th width="80" align="center">是否热卖</th>
+        <th width="80" align="center">是否上架</th>
+        <th width="80" align="center">商品价格</th>
+          <th width="80" align="center">商品品牌</th>
+          <th width="80" align="center">缩略图</th>
+        <th width="80" align="center">操作</th>
+      </tr>
+      <tbody class="goodsdata">
+      <?php foreach ($list as $key => $value): ?>
+        
+
+            <tr>
+        <td align="center"><input type="checkbox" name="checkbox[]" class="goods_Id" value="<?php  echo $value['goods_id'] ?>" /></td>
+        <td align="center"><?php  echo $value['goods_id'] ?></td>
+        <td  style="cursor:pointer" title="点击修改名称"><span class="goodsname"><?php echo $value['goods_name'] ?></span></td>
+        <td align="center"><a href="product.php?cat_id=3"><?php echo $value['cat_name'] ?></a></td>
+        <td align="center"><?php echo $value['add_time'] ?></td>
+        <td align="center" title="点击新品状态" style="cursor:pointer" class="isnew" 
+        zhi="<?php echo $value['is_new']  ?>"><?php echo $is_new =  $value['is_new']==1?"是":"否"; ?></td>
+        <td align="center" title="点击热销状态" style="cursor:pointer" class="ishot" zhi="<?php echo $value['is_hot']  ?>"><?php echo $is_hot =  $value['is_hot']==1?"是":"否"; ?></td>
+        <td align="center" title="点击上下架状态" style="cursor:pointer" class="isput" zhi="<?php echo $value['is_put']  ?>"><?php echo $is_put =  $value['is_put']==1?"是":"否"; ?></td>
+        <td align="center"  title="点击修改名称" style="cursor:pointer"><span class="goodsprice"><?php echo $value['goods_price'] ?></span></td>
+
+
+                <td align="center"><?php  echo $value['brand_name'] ?></td>
+
+        <td align="center"><img src="/<?php echo $value['goods_img'] ?>" style='width:40px' alt=""></td>
+
+
+                <td align="center" style="width:150px"  >
+
+                  <a href="{:url('goodss/list_del')}?goodId={$value['goods_id']}">删除</a>|<a href="{:url('goodss/skushow')}?goods_id=<?php  echo $value['goods_id'] ?>">查看货品</a>
+                 </td>
+      </tr>
+      <?php endforeach ?>
+      </tbody>
+          </table>
+    <div class="action">
+     <select name="action" id="action" onchange="douAction()">
+      <option value="0">请选择...</option>
+      <option value="del_all">删除</option>
+      <option value="category_move">移动分类至</option>
+     </select>
+     <select name="new_cat_id" style="display:none" id="cat_type">
+      <option value="0">未分类</option>
+      <?php foreach ($cats as $key => $value): ?>
+         <option value="<?php echo $value['cat_id'] ?>"><?php echo str_repeat('&nbsp;&nbsp;',($value['f']-1)*2) ?><?php echo $value['cat_name'] ?></option>
+      <?php endforeach ?>
+                 </select>
+     <input name="submit" class="btn" type="button" onclick="sub()" value="执行" />
+        <style>
+            .pagination {}
+            .pagination li {display: inline-block;margin-right: -1px;padding: 5px;border: 1px solid #e2e2e2;min-width: 20px;text-align: center;}
+            .pagination li.active {background: red;color: #fff;border: 1px solid red;}
+            .pagination li a {display: block;text-align: center;}
+        </style>
+        <span class="pager">
+                           {$page}
+        </span>
+    </div>
+    </form>
+    </div>
+    <div class="clear"></div>
+
+ </div>
+ </div>
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+<script type="text/javascript">
+
+onload = function()
+{
+ document.forms['action'].reset();
+}
+
+function douAction()
+{
+
+ var frm = document.forms['action'];
+ frm.elements['new_cat_id'].style.display = frm.elements['action'].value == 'category_move' ? '' : 'none';
+}
+function sub()
+{
+    var  type_vale=$("#action").val();
+    var goodsId="";
+    //$.each是获取所有复选框选中时的值
+    $.each($('input:checkbox'),function(){
+        if(this.checked){
+            goodsId+=$(this).val()+",";
+        }
+    });
+    if(goodsId=="")
+    {
+        alert("请选择商品");
+    }
+    else{
+        if(type_vale=="del_all")//这是批删
+        {
+            $.ajax({
+                url:"{:url('goodss/goods_del')}",
+                dataType:"json",
+                type:"post",
+                data:{
+                    goodsId:goodsId,
+                },success:function(res){
+                    if(res.error==1)
+                    {
+                        alert("删除成功");
+                        location.reload();
+                    }
+                    else {
+                        alert("删除失败");
+                        location.reload();
+                    }
+                }
+            });
+        }
+        //这是批量修改
+        else if(type_vale=="category_move")
+        {
+            var cat_type=$("#cat_type").val();//这是
+            if(cat_type==0)
+            {
+                alert("请选择类型");
+            }
+            else{
+                $.ajax({
+                    url:"{:url('goodss/goods_up')}",
+                    dataType:"json",
+                    type:"post",
+                    data:{
+                        goodsId:goodsId,
+                        cat_type:cat_type,
+                    },success:function(res){
+
+                        if(res.error==1)
+                        {
+                            alert("更改成功");
+                            location.reload();
+                        }
+                        else {
+                            alert("更改失败");
+                            location.reload();
+                        }
+                    }
+                });
+            }
+        }
+    }
+}
+
+
+</script>
+</body>
+</html>
+<script src="/static/js/jquery.min.js"></script>
+<script>
+  $(document).ready(function(){
+    $('#shixuan').click(function(){
+      var likecat=$(".likecat option:selected").val();
+      var inpMain=$(".inpMain").val();
+      $.ajax({
+        url:"{:url('goodss/search')}",
+        dataType:"json",
+        type:"post",
+        data:{
+          cat_id:likecat,
+          goods_name:inpMain
+        },success:function(res){
+          console.log(res)
+          if(res['msg'] == 1){
+            $('.goodsdata').empty();
+            $.each(res['list'],function(k,v){
+             var c = $('<tr></tr>'); 
+             c.append('<td align="center"><input type="checkbox" name="checkbox[]" value="15" /></td><td align="center">'+v['goods_id']+'</td><td><a href="product.php?rec=edit&id=15">'+v['goods_name']+'</a></td><td align="center"><a href="product.php?cat_id=3">'+v['cat_name']+'</a></td><td align="center">'+v['add_time']+'</td><td align="center">'+v['is_new']+'</td><td align="center">'+v['is_hot']+'</td><td align="center">'+v['is_put']+'</td><td align="center">'+v['goods_price']+'</td><td align="center"><img src="/'+v['goods_img']+'" style="width:40px" alt=""></td><td align="center" style="width:150px"  ><a href="{:url("goodss/list_del")}?goodId='+v['goods_id']+'">删除</a>|<a href="{:url("goodss/skushow")}?goods_id='+v['goods_id']+'">查看货品</a></td>');
+                $('.goodsdata').append(c);
+            })
+            
+             
+          }else{
+            alert('您查找的数据不存在，请重新查询！！！');
+          }
+        }
+      })
+    })
+
+    /*修改商品名称*/
+   $(document).on('click','.goodsname',function(){
+       var goods_name=$(this).text();
+      //$(this).parents('td').empty();
+      $(this).parent().html('<input type="text" class="nameupdate" value="'+goods_name+'"/>');
+     
+   })
+     $(document).on('blur','.nameupdate',function(){
+        var newgoods_name=$(this).val();
+        var goods_id=$(this).parent().prev().html();
+        var that = $(this);
+         $.ajax({
+            url:"{:url('goodss/goods_update')}",
+            dataType:'json',
+            type:'post',
+            data:{
+               goods_id:goods_id,
+               goods_name:newgoods_name
+            },success:function(res){
+              if(res==666){
+                that.parent().html('<span class="goodsname">'+newgoods_name+'</span>');
+              }else if(res == 101){
+                alert('修改值与原值相同，无法修改，请重新修改！！！！');
+              }else{
+                alert('修改失败');
+              }
+            }
+         })
+        
+      })
+     /*修改商品价格*/
+   $(document).on('click','.goodsprice',function(){
+      var goods_price=$(this).text();
+      $(this).parent().html('<input type="text" class="priceupdate" value="'+goods_price+'"/>');
+   })
+    $(document).on('blur','.priceupdate',function(){
+        var newgoods_price=$(this).val();
+        var goods_id=$(this).parent().parent().children().eq(1).html();
+       
+        var that = $(this);
+         $.ajax({
+            url:"{:url('goodss/goods_update')}",
+            dataType:'json',
+            type:'post',
+            data:{
+               goods_id:goods_id,
+               goods_price:newgoods_price
+            },success:function(res){
+              if(res==666){
+                that.parent().html('<span class="goodsprice">'+newgoods_price+'</span>');
+              }else if(res == 101){
+                alert('修改值与原值相同，无法修改，请重新修改！！！！');
+              }else{
+                alert('修改失败');
+              }
+            }
+         })
+      })
+    /*修改新品状态*/
+   $(document).on('click','.isnew',function(){
+    var goods_id=$(this).parent().children().eq(1).html();
+     var is_new=$(this).attr('zhi');
+     var that=$(this);
+     if(is_new==1){is_new=0;}else{is_new=1;}
+ 
+       $.ajax({
+            url:"{:url('goodss/goods_update')}",
+            dataType:'json',
+            type:'post',
+            data:{
+               goods_id:goods_id,
+               is_new:is_new
+            },success:function(res){
+              if(res==666){
+                if(is_new==1){
+                  that.html('是');
+                  that.attr('zhi',1);
+                }else{
+                  that.html('否');
+                  that.attr('zhi',0);
+                }
+                
+              }else if(res == 101){
+                alert('修改值与原值相同，无法修改，请重新修改！！！！');
+              }else{
+                alert('修改失败');
+              }
+            }
+         })
+   })
+    /*修改热销状态*/
+   $(document).on('click','.ishot',function(){
+        var goods_id=$(this).parent().children().eq(1).html();
+     var is_hot=$(this).attr('zhi');
+     var that=$(this);
+     if(is_hot==1){is_hot=0;}else{is_hot=1;}
+ 
+       $.ajax({
+            url:"{:url('goodss/goods_update')}",
+            dataType:'json',
+            type:'post',
+            data:{
+               goods_id:goods_id,
+               is_hot:is_hot
+            },success:function(res){
+              if(res==666){
+                if(is_hot==1){
+                  that.html('是');
+                  that.attr('zhi',1);
+                }else{
+                  that.html('否');
+                  that.attr('zhi',0);
+                }
+                
+              }else if(res == 101){
+                alert('修改值与原值相同，无法修改，请重新修改！！！！');
+              }else{
+                alert('修改失败');
+              }
+            }
+         })
+   })
+    /*修改上下架*/
+   $(document).on('click','.isput',function(){
+        var goods_id=$(this).parent().children().eq(1).html();
+     var is_put=$(this).attr('zhi');
+     var that=$(this);
+     if(is_put==1){is_put=0;}else{is_put=1;}
+ 
+       $.ajax({
+            url:"{:url('goodss/goods_update')}",
+            dataType:'json',
+            type:'post',
+            data:{
+               goods_id:goods_id,
+               is_put:is_put
+            },success:function(res){
+              if(res==666){
+                if(is_put==1){
+                  that.html('是');
+                  that.attr('zhi',1);
+                }else{
+                  that.html('否');
+                  that.attr('zhi',0);
+                }
+                
+              }else if(res == 101){
+                alert('修改值与原值相同，无法修改，请重新修改！！！！');
+              }else{
+                alert('修改失败');
+              }
+            }
+         })
+   })
+  })
+</script>

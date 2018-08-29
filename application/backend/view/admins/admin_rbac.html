@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>DouPHP 管理中心 - 网站管理员 </title>
+<meta name="Copyright" content="Douco Design." />
+<link href="/static/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/global.js"></script>
+</head>
+<body>
+<div id="dcWrap">
+ <div id="dcHead">
+ <div id="head">
+  <div class="logo"><a href="index.html"><img src="/static/images/dclogo.gif" alt="logo"></a></div>
+  <div class="nav">
+
+   <ul class="navRight">
+    <li class="M noLeft"><a href="JavaScript:void(0);">您好，{$admin}</a>
+
+    </li>
+    <li class="noRight"><a href="{:url('login/loginout')}">退出</a></li>
+   </ul>
+  </div>
+ </div>
+</div>
+<!-- dcHead 结束 --> <div id="dcLeft"><div id="menu">
+ <ul class="top">
+  <li><a href="{:url('indexs/index')}"><i class="home"></i><em>管理首页</em></a></li>
+ </ul>
+ <ul>
+  <li><a href="{:url('admins/admin_list')}"><i class="manager"></i><em>网站管理员</em></a></li>
+  <li><a href="{:url('admins/admin_rbac')}"><i class="manager"></i><em>RBAC管理</em></a></li> </ul>
+ <ul>
+  <li><a href="{:url('slides/slide_list')}"><i class="show"></i><em>首页幻灯广告</em></a></li>
+ </ul>
+ <ul>
+ {include file="public/brand"}
+  <li><a href="{:url('goodss/goods_category')}"><i class="productCat"></i><em>商品分类</em></a></li>
+  <li><a href="{:url('goodss/goods_list')}"><i class="product"></i><em>商品列表</em></a></li>
+   
+  <li><a href="{:url('goodss/goods_attr_list')}"><i class="product"></i><em>商品属性</em></a></li>
+        <li><a href="{:url('goodss/goods_recycle_bin')}"><i class="product"></i><em>商品回收站</em></a></li>
+  <li><a href="{:url('goodss/goods_photo')}"><i class="article"></i><em>相册列表</em></a></li>
+ </ul>
+ <ul>
+  <li><a href="{:url('articles/article_list')}"><i class="article"></i><em>文章列表</em></a></li>
+ </ul>
+ <ul>
+  <li><a href="{:url('order/order_list')}"><i class="article"></i><em>订单列表</em></a></li>
+ </ul>
+ <ul class="bot">
+  <li><a href="#"><i class="system"></i><em>系统设置</em></a> </li>
+  <li><a href="{:url('logs/log')}"><i class="managerLog"></i><em>操作记录</em></a></li>
+  <li><a href="{:url('indexs/up_pwd')}"><i class="managerLog"></i><em>修改密码</em></a></li>
+ </ul>
+</div></div>
+ <div id="dcMain">
+
+<div id="urHere">DouPHP 管理中心<b>></b><strong>权限管理</strong> </div>   <div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    <h3><a href="{:url('admins/access_list')}" class="actionBtn">权限列表</a>权限管理</h3>
+  <form action="{:url('admins/power')}" method="post" >
+   <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+    <tr>
+     <td width="100" align="right">权限名称</td>
+     <td>
+      <input type="text" name="access_name" id="access_name">
+     </td>
+    </tr>
+    <tr>
+     <td width="100" align="right">权限的级别</td>
+     <td>
+      <select name="p_id" id="p_id">
+       <option value="0">顶级权限</option>
+       {volist name="power" id="vo"}
+         <option value="{$vo.access_id}">{$vo.access_name}</option>
+       {/volist}
+      </select>
+     </td>
+    </tr>
+    <tr>
+     <td width="100" align="right">是否显示</td>
+     <td>
+      <input type="radio" name="is_show" value="1" checked>是                  <input type="radio" name="is_show" value="0">否
+     </td>
+    </tr>
+    <tr>
+     <td width="100" align="right">权限的url</td>
+     <td>
+      <input type="text" name="access_url" id="access_url" placeholder="Login">
+     </td>
+    </tr>
+    <tr>
+     <td></td>
+     <td>
+      <input type="hidden" name="token" value="5a58b748" />
+      <input type="submit" name="submit" class="btn" value="提交" id="btn"/>
+     </td>
+    </tr>
+   </table>
+  </form>
+  <br>
+  <br>
+<!--//分配权限-->
+  <form action="{:url('admins/rbac_do')}" method="post">
+   <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+    <tr>
+     <td width="100" align="right">请选择用户</td>
+     <td>
+      <select name="user_id" id="user_id">
+       {volist name="user" id="use"}
+          <option value="{$use.admin_id}">{$use.admin_name}</option>
+       {/volist}
+      </select>
+     </td>
+    </tr>
+    <tr>
+     <td width="100" align="right">分配权限
+      <input type="checkbox" name="quan" id="quan"  onclick="che()">全选</td>
+     <td>
+
+      {volist name="pow" id="p"}
+        <input type="checkbox" name="power[]" class="pow" value="{$p.access_id}">{$p.access_name}
+      {/volist}
+     </td>
+    </tr>
+    <tr>
+     <td width="100" align="right"></td>
+     <td>
+      <input type="hidden" name="token" value="5a58b748" />
+      <input type="submit" name="submit" class="btn" value="提交" />
+     </td>
+    </tr>
+   </table>
+  </form>
+ </div>
+
+ <div class="clear"></div>
+<div id="dcFooter">
+ <div id="footer">
+  <div class="line"></div>
+  <ul>
+   版权所有 © 2013-2015 漳州豆壳网络科技有限公司，并保留所有权利。
+  </ul>
+ </div>
+</div><!-- dcFooter 结束 -->
+<div class="clear"></div> </div>
+</body>
+<script>
+ function che()
+ {
+     var ce=$("#quan").prop("checked");
+     if(ce==true)
+     {
+         $('.pow').prop("checked","checked");
+     }
+     else
+     {
+         $('.pow').removeAttr("checked");
+     }
+ }
+</script>
+</html>

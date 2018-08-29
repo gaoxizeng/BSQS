@@ -1,0 +1,367 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="/frontend/css/css.css" rel="stylesheet" type="text/css" />
+<link href="/frontend/css/common.css" rel="stylesheet" tyle="text/css" />
+<link href="/frontend/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<script src="/frontend/js/jquery.min.1.8.2.js" type="text/javascript"></script>
+<script src="/frontend/js/jquery.SuperSlide.2.1.1.js" type="text/javascript"></script>
+<script src="/frontend/js/common_js.js" type="text/javascript"></script>
+<script src="/frontend/js/footer.js" type="text/javascript"></script>
+<!--[if IE 7]>
+<link rel="stylesheet" href="css/font-awesome-ie7.min.css">
+<![endif]-->
+<title>购物车</title>
+<script type="text/javascript">
+$(document).ready(function () {
+   //全选
+   $("#CheckedAll").click(function () {
+	   if (this.checked) {                 //如果当前点击的多选框被选中
+		   $('input[type=checkbox][name=checkitems]').attr("checked", true);
+	   } else {
+		   $('input[type=checkbox][name=checkitems]').attr("checked", false);
+	   }
+   });
+   $('input[type=checkbox][name=checkitems]').click(function () {
+	   var flag = true;
+	   $('input[type=checkbox][name=checkitems]').each(function () {
+		   if (!this.checked) {
+			   flag = false;
+		   }
+	   });
+
+	   if (flag) {
+		   $('#CheckedAll').attr('checked', true);
+	   } else {
+		   $('#CheckedAll').attr('checked', false);
+	   }
+   });
+   //输出值
+   $("#send").click(function () {
+	      if($("input[type='checkbox'][name='checkitems']:checked").attr("checked")){
+	   var str = "你是否要删除选中的商品：\r\n";
+	   $('input[type=checkbox][name=checkitems]:checked').each(function () {
+		   str += $(this).val() + "\r\n";
+	   })
+	   alert(str);
+		  }
+		  else{
+			   var str = "你为选中任何商品，请选择后在操作！"; 
+			   alert(str);
+       }
+	   	    
+   });
+})
+</script>
+</head>
+<!--宽度1000的购物车样式-->
+<body>
+<div id="top">
+  <div class="carts">
+    <div class="Collection"><em></em><a href="#">收藏我们</a></div>
+	<div class="hd_top_manu clearfix">
+	  <ul class="clearfix">
+	   <li class="hd_menu_tit zhuce" data-addclass="hd_menu_hover">欢迎光临本店！<a href="#" class="red">
+           {$Think.session.user_nick_name}
+       </a> 新用户<a href="#" class="red">[免费注册]</a></li>
+	   <li class="hd_menu_tit" data-addclass="hd_menu_hover"><a href="{:url('index/orders')}">我的订单</a></li>
+	   <li class="hd_menu_tit" data-addclass="hd_menu_hover"> <a href="{:url('index/shopping_cart')}">购物车(<b>0</b>)</a> </li>
+          <li class="hd_menu_tit" data-addclass="hd_menu_hover"><a href="{:url('login/login')}">退出</a></li>
+          <li class="hd_menu_tit" data-addclass="hd_menu_hover"></li>
+	   <li class="hd_menu_tit list_name" data-addclass="hd_menu_hover">
+	    <div class="hd_menu_list">
+		   <ul>
+		    <li><a href="#">常见问题</a></li>
+			<li><a href="#">在线退换货</a></li>
+		    <li><a href="#">在线投诉</a></li>
+			<li><a href="#">配送范围</a></li>
+		   </ul>
+		</div>
+	   </li>
+	  </ul>
+	</div>
+  </div>
+</div>
+    <div id="shop_cart">
+ <div id="header">
+  <div class="logo">
+  <a href="#"><img src="/frontend/images/logo.png" /></a>
+  <div class="phone">
+   免费咨询热线:<span class="telephone">400-3454-343</span>
+  </div>
+  </div>
+  <div class="Search">
+    <p><input name="" type="text"  class="text"/><input name="" type="submit" value=""  class="Search_btn"/></p>
+	<p class="Words"><a href="#">苹果</a><a href="#">香蕉</a><a href="#">菠萝</a><a href="#">西红柿</a><a href="#">橙子</a><a href="#">苹果</a></p>
+ </div>
+</div>
+<!--提示购物步骤-->
+
+ <div class="prompt_step">
+  <img src="/frontend/images/cart_step_01.png" />
+ </div>
+ <!--购物车商品-->
+ <div class="Shopping_list">
+  <div class="title_name">
+    <ul>
+	<li class="checkbox">&nbsp;</li>
+	<li class="name">商品名称</li>
+	<li class="scj">市场价</li>
+	<li class="bdj">本店价</li>
+	<li class="sl">购买数量</li>
+	<li class="xj">小计</li>
+	<LI class="cz">操作</LI>
+  </ul>
+ </div>
+  <div class="shopping">
+  <form  method="post" action="">
+ <table class="table_list">
+ <?php foreach ($list as $key => $value): ?>
+ 	
+
+   <tr class="tr">
+  
+   <td class="checkbox"><input name="checkitems" class="ddok" type="checkbox" value="<?php echo $value['cart_id'] ?>" /></td>
+    <td class="name">
+	  <div class="img"><a href="#"><img style="width:84px" src="/<?php echo $value['goods_img'] ?>" /></a></div>
+	  <div class="p_name"><a href="#"><?php echo $value['goods_name'] ?></a></div>
+	</td>
+	<td class="scj sp">￥<span><?php echo $value['yuan_price'] ?></span>.00</td>
+	<td class="bgj sp" >￥<span class="goods_price"><?php echo $value['goods_price'] ?></span>.00</td>
+	<td class="sl">
+	    <div class="Numbers">
+		  <a href="javascript:void(0);"  class="shu" class="jian">-</a>
+		  <input id="number" name="number" type="text" value="<?php echo $value['goods_num'] ?>" class="number_text">
+		  <a href="javascript:void(0);"  class="shu" class="jia">+</a>
+		 </div>
+	</td>
+	<td class="xj">￥<span><?php echo ($value['goods_price']*$value['goods_num']) ?></span>.00</td>
+	<td class="cz">
+  	 <p>
+     <a href="javascript:void(0)" class="del">删除</a>
+     <input type="hidden" value="<?php echo $value['cart_id'] ?>" class="cart_id"/>
+     <P>
+  	 <p><a href="javascript:void(0)" class="soucang">收藏该商品</a>
+<input type="hidden" value="<?php echo $value['cart_id'] ?>" class="cart_id"/>
+     </p>
+	</td>
+   </tr>
+ <?php endforeach ?>
+ </table>
+ <div class="sp_Operation">
+  <div class="select-all">
+    </div> 
+     
+	 <!--结算-->
+	<div class="toolbar_right">
+    <div class="p_Total">
+	  <span class="text">商品总价：</span><span class="price sumPrice"><sapn class="price_sum">0</sapn>元</span>
+	</div>
+	<div class="Discount"><span class="text">以节省：</span><span class="jie_price">0</span>元</div>
+	<div class="btn">
+	 <a class="cartsubmit" href="javascript:void(0)"></a>
+	 <a class="continueFind" href="./"></a>
+	</div>
+  </div>
+  </div>
+   </form>
+ </div>
+
+</div>
+<!--底部样式-->
+ <div class="footer help-box  clearfix">
+   <div class="right_footer clearfix">
+   <dl>
+    <dt><em class="icon_img"></em>购物指南</dt>
+    <dd><a href="#">怎样购物</a></dd>
+    <dd><a href="#">积分政策</a></dd>
+    <dd><a href="#">会员优惠</a></dd>
+    <dd><a href="#">订单状态</a></dd>
+    <dd><a href="#">产品信息</a></dd>
+    <dd><a href="#">怎样购物</a></dd>
+   </dl>
+   <dl>
+    <dt><em class="icon_img"></em>配送方式</dt>
+    <dd><a href="#">快递资费及送达时间</a></dd>
+    <dd><a href="#">快递覆盖地区查询</a></dd>
+    <dd><a href="#">验货与签收</a></dd>
+    <dd><a href="#">订单状态</a></dd>
+    <dd><a href="#">产品信息</a></dd>
+    <dd><a href="#">怎样购物</a></dd>
+   </dl>
+   <dl>
+    <dt><em class="icon_img"></em>配送方式</dt>
+    <dd><a href="#">货到付款</a></dd>
+    <dd><a href="#">支付宝</a></dd>
+    <dd><a href="#">财付通</a></dd>
+    <dd><a href="#">网银支付</a></dd>
+    <dd><a href="#">银联支付</a></dd>
+   </dl>
+   <dl>
+    <dt><em class="icon_img"></em>售后服务</dt>
+    <dd><a href="#">退换货原则</a></dd>
+    <dd><a href="#">退换货要求与运费规则</a></dd>
+    <dd><a href="#">退换货流程</a></dd>
+   </dl>
+   <dl>
+    <dt><em class="icon_img"></em>关于我们</dt>
+    <dd><a href="#">关于我们</a></dd>
+    <dd><a href="#">友情链接</a></dd>
+    <dd><a href="#">媒体报道</a></dd>
+    <dd><a href="#">新闻动态</a></dd>
+    <dd><a href="#">企业文化</a></dd>
+ 
+   </dl>
+  </div>
+  <div class="Copyright">
+  <p><a href="#">关于我们</a> | <a href="#">隐私申明</a> | <a href="#">成为供应商</a> | <a href="#">茶叶</a> | <a href="#">博客</a> |<a href="#">友情链接</a> | <a href="#">网站地图</a></p>
+  <p>Copyright 2010 - 2015 巴山雀舌 四川巴山雀舌茗茶实业有限公司 zuipin.cn All Rights Reserved </p>
+  <p>川ICP备10200063号-1</p>
+   <a href="#" class="return_img"></a>
+ </div>
+ </div>
+        <div class="fixedBox">
+            <ul class="fixedBoxList">
+                <li class="fixeBoxLi user"><a href="{:url('user/user_info')}"> <span class="fixeBoxSpan"></span> <strong>用户</strong></a> </li>
+                <li class="fixeBoxLi cart_bd" style="display:block;" id="cartboxs">
+                    <p class="good_cart">0</p>
+                    <a href="{:url('index/shopping_cart')}"><span class="fixeBoxSpan"></span> <strong >购物车</strong></a>
+                    <div class="cartBox">
+                        <div class="bjfff"></div><div class="message">购物车内暂无商品，赶紧选购吧</div>    </div></li>
+
+
+
+                <li class="fixeBoxLi BackToTop"> <span class="fixeBoxSpan"></span> <strong>返回顶部</strong> </li>
+            </ul>
+        </div>
+<!--结束-->
+</div>
+</body>
+</html>
+<script>
+	$(document).ready(function(){
+    
+    $(document).on('click','.cartsubmit',function(){
+            var  price_sum=$('.price_sum').html();
+            var  jie_price=$('.jie_price').html();
+
+            var arr = new Array();
+            var chajia = new Array();
+               $(".ddok:checkbox[checked]").each(function(i){
+                    arr[i] = $(this).val();
+                chajia[i] = parseInt($(this).parents('tr').children().eq('4').children().children().eq(1).val());
+                 
+                });
+               //购物车的id
+               var cart_id = arr.join("-");
+               var goods_info_num = chajia.join("-");
+               //商品的具体的数量
+               //console.log(goods_info_num);
+               $.ajax({
+                url:"{:url('index/orderadd')}",
+                dataType:'json',
+                type:'post',
+                data:{
+                    'cart_ids':cart_id,
+                    'price_sum':price_sum,
+                    'jie_price':parseInt(price_sum)+parseInt(jie_price),
+                    'goods_info_num':goods_info_num
+                },success:function(res){
+                  console.log(res);
+                  if(res['msg']==666){
+                  //  alert(res['addid']);return false;
+                 var id=res['addid'];
+                  window.location.href='{:url("index/orders")}?order_id='+id;
+                  }else{
+                    alert('结算失败');
+                  }
+                }
+               })
+    })
+		$(document).on('click','.ddok',function(){
+
+			  var arr = new Array();
+			  var sumprices = 0;
+			  var chajia = new Array();
+			  var jiuprice = new Array();
+                $(".ddok:checkbox[checked]").each(function(i){
+                    arr[i] = $(this).val();
+                    sumprices = parseInt(sumprices)+parseInt($(this).parents('tr').children().eq('5').children().html());
+                    jiuprice[i] =parseInt($(this).parents('tr').children().eq('2').children().html());
+                    chajia[i] = parseInt($(this).parents('tr').children().eq('4').children().children().eq(1).val());
+                });
+            
+                var jiujia=0;
+                for (var i = chajia.length - 1; i >= 0; i--) {
+                	jiujia=jiujia+parseInt(chajia[i])*parseInt(jiuprice[i]);
+                };
+               
+                var zuizhong=parseInt(jiujia)-parseInt(sumprices);
+                 //jiajia=()-sumprices;
+                $('.jie_price').html(zuizhong);
+                $('.price_sum').html(sumprices);
+                //console.log(sumprices);
+		})
+       $(document).on('click','.shu',function(){
+
+       	var that = $(this);
+       	if($(this).parents('tr').children().eq('0').children().is(':checked')==true){
+              alert('请将前面的选中取消');return false;
+       	    }
+        var goods_price=that.parent().parent().prev().children().html();
+         
+       	 if($(this).html() == '+'){
+       	 	var aa=that.prev().val();
+       	 	var num =parseInt(aa)+1;
+       	 	if(num > 10){
+       	 		alert('数目不能超过10件');return false;
+       	 	}
+       	 	that.prev().val(num);
+       	 	var bb=that.prev().val();
+       	 	that.parent().parent().next().html("￥<span>"+goods_price*bb+"</span>.00");
+       	 }else{
+       	 	var aa=that.next().val();
+       	 	var num =parseInt(aa)-1;
+       	 	if(num < 1){
+       	 		alert('数目不能小于一');return false;
+       	 	}
+       	 	that.next().val(num);
+       	 	var bb=that.next().val();
+       	 	that.parent().parent().next().html("￥<span>"+goods_price*bb+"</span>.00");
+       	 }
+       })
+	})
+  $(document).on('click','.del',function(){
+    var cart_id = $(this).siblings().val();
+   $.ajax({
+          url:"{:url('index/delshopping')}",
+          data:{id:cart_id},
+          dataType:"json",
+          success:function(new_num){
+            if(new_num == 0){
+              alert('删除成功');window.location.href="http://www.tp5.com/index.php/frontend/index/shopping_cart.html";
+            }
+            else {
+              alert('删除失败');window.location.href="http://www.tp5.com/index.php/frontend/index/shopping_cart.html";
+            }
+          }
+      })
+  })
+  $(document).on('click','.soucang',function(){
+     var cart_id = $(this).siblings().val();
+      $.ajax({
+          url:"{:url('index/xihuan')}",
+          data:{id:cart_id},
+          dataType:"json",
+          success:function(new_num){
+            if(new_num == 1){
+              alert('收藏成功');
+            }
+            else {
+              alert('不能重复收藏');
+            }
+          }
+      })
+  })
+</script>

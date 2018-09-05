@@ -36,7 +36,7 @@ class Index extends Controller{
        // $arr=$this->ordering($cat,0);//这是分类
      
 
-        $redis=new \Redis();
+        $redis=new \Redis();  
         $redis->connect("127.0.0.1",6379); 
         $cat=$redis->get('cat');
             if($cat){
